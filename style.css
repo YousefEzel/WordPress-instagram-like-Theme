@@ -1,0 +1,150 @@
+/*
+*
+* Theme Name: WP-Instagram
+* Author: Youssef Mhamdi 
+* Description: Just another Theme that's look like Instagram
+* Version: 1.0.0
+* Tags: Instagram, Insta, wordpress, WP, WordPress 
+*
+*/
+body{
+	background-color: #fafafa !important;
+}
+#navbarSupportedContent {
+	float: right !important;
+	
+	flex-grow: unset;
+	/*display: flex;*/
+	align-items: end;
+	align-content: end;
+}
+
+.navbar-bg {
+	background: white;
+	border-bottom: 1px solid #f0d3d3;
+}
+#navbar-setup{
+	flex-direction: row !important;
+}
+.fa-size{
+	font-size: 1.5rem;
+	margin: 0px 20px;
+	color: black;
+}
+
+.logo-img{
+	height: 40px;
+	display: inline-flex;
+	flex-direction: row-reverse;
+	align-items: flex-end;
+	align-content: center;
+	margin-top: -10px;
+}
+
+
+/*--  Small deevices  --*/
+/* Extra small devices (phones ...) */
+@media only screen and (max-width: 330px) {
+		.active-pink-4{
+		display: none;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 0px;
+		color: black;
+  	}
+}
+@media only screen and (min-width: 360px) {
+		.active-pink-4{
+		display: none;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 4px;
+		color: black;
+  	}
+}
+@media only screen and (min-width: 450px) {
+		.active-pink-4{
+		display: none;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 15px;
+		color: black;
+  	}
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+  .active-pink-4{
+		display: none;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 15px;
+		color: black;
+  	}
+}
+
+/* Medium devices (landscape tablets, 730px and up) */
+@media only screen and (min-width: 758px) {
+  .active-pink-4{
+		 display: none;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 20px;
+		color: black;
+  }
+} 
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {
+  .active-pink-4{
+		 display: flex;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 20px;
+		color: black;
+  }
+} 
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {
+  .active-pink-4{ 
+    display: flex;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 20px;
+		color: black;
+  	}
+} 
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {
+  .active-pink-4{
+    display: flex;
+	}
+	.fa-size{
+		font-size: 1.5rem;
+		margin: 0px 20px;
+		color: black;
+  	}
+}
+
+/*-----------------------*/
+
+
+.fas.fa-search.search-shit {
+	position: absolute;
+	top: 29px;
+	margin-left: 14px;
+	color: gray;
+}
+
+.form-control.search-form {
+	height: 30px;
+	width: 250px;
+}
