@@ -12,7 +12,7 @@
 
     <nav class="navbar navbar-expand-lg navbar-bg navbar-light indigo">
       <div class="container">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="<?php echo home_url('/'); ?>">
           <i class="fab fa-instagram fa-2x" style="border-right: 2px solid black; padding-right: 10px;"></i> 
             <?php
             $custom_logo_id = get_theme_mod( 'custom_logo' );
