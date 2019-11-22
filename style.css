@@ -10,7 +10,7 @@
 body{
 	background-color: #fafafa !important;
 }
-/*---------------------------------- POST STYLE ----------------------------------*/
+/*---------------------------------- --START-- POST STYLE ----------------------------------*/
 .row{
 	padding: 0;
 	margin:  0;
@@ -25,8 +25,11 @@ body{
 	border-bottom: 1px solid #e6e6e6;
 	background: #fff;
 }
+.content p, figcaption {
+	padding: 0rem 1rem;
+}
 
-/*---------------------------------- POST STYLE ----------------------------------*/
+/*---------------------------------- --END-- POST STYLE ----------------------------------*/
 
 #navbarSupportedContent {
 	float: right !important;
