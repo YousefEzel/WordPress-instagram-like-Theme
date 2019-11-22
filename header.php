@@ -11,9 +11,9 @@
   <body <?php body_class(); ?> >
 
     <nav class="navbar navbar-expand-lg navbar-bg navbar-light indigo">
-      <div class="container">
+      <div class="container" style="max-width: 70%;">
         <a class="navbar-brand" href="<?php echo home_url('/'); ?>">
-          <i class="fab fa-instagram fa-2x" style="border-right: 2px solid black; padding-right: 10px;"></i> 
+          <i class="fab fa-instagram " style="font-size: 1.7rem; border-right: 2px solid black; padding-right: 10px;"></i> 
             <?php
             $custom_logo_id = get_theme_mod( 'custom_logo' );
             $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );

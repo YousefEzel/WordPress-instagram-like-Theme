@@ -10,6 +10,24 @@
 body{
 	background-color: #fafafa !important;
 }
+/*---------------------------------- POST STYLE ----------------------------------*/
+.row{
+	padding: 0;
+	margin:  0;
+}
+.post {
+	border-radius: 3px;
+	border: 1px solid #e6e6e6;
+	background: #fff;
+}
+.post-content{
+	border-top: 1px solid #e6e6e6;
+	border-bottom: 1px solid #e6e6e6;
+	background: #fff;
+}
+
+/*---------------------------------- POST STYLE ----------------------------------*/
+
 #navbarSupportedContent {
 	float: right !important;
 	
@@ -21,7 +39,7 @@ body{
 
 .navbar-bg {
 	background: white;
-	border-bottom: 1px solid #f0d3d3;
+	border-bottom: 1px solid #e6e6e6;
 }
 #navbar-setup{
 	flex-direction: row !important;
@@ -33,12 +51,13 @@ body{
 }
 
 .logo-img{
-	height: 40px;
 	display: inline-flex;
 	flex-direction: row-reverse;
 	align-items: flex-end;
 	align-content: center;
-	margin-top: -10px;
+	font-size: 1.3rem;
+	height: 2rem;
+	margin-top: -6px;
 }
 
 
@@ -139,8 +158,8 @@ body{
 
 .fas.fa-search.search-shit {
 	position: absolute;
-	top: 29px;
-	margin-left: 14px;
+	top: 21px;
+	margin-left: 12px;
 	color: gray;
 }
 
