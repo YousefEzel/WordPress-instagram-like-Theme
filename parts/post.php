@@ -1,7 +1,7 @@
 <div class="post mt-5 post-<?php echo(the_ID()); ?>">
 	<div class="col m-2 post-header">
-		<div class="row" style="display: inline-flex;flex-flow: row;max-width: 100%;flex-direction: row;flex-flow: row;">
-			<div class="col-1" style=" padding: 2px; margin: 0;display: flex;max-inline-size: inherit;" >
+		<div class="row header-row" style="">
+			<div class="col-img" style=" " >
 				<img class="user-img circle-img" width="45" height="45" src="<?php echo get_avatar_url( get_the_author_meta('ID')); ?>" srcset="<?php echo get_avatar_url( get_the_author() ); ?>" >
 			</div>
 			<div class="col mx-2" style="display: flex;">

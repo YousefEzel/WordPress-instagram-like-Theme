@@ -15,6 +15,24 @@ body{
 	padding: 0;
 	margin:  0;
 }
+.header-row{
+	display: inline-flex;
+	flex-flow: row;
+	max-width: 100%;
+	flex-direction: row;
+	flex-flow: row;
+}
+.col-img{
+	padding: 0 0 0 10px !important; 
+	margin: 0;
+	display: flex;
+	max-inline-size: inherit;
+}
+.circle-img{
+	border-radius: 25px !important;
+
+}
+
 .post {
 	border-radius: 3px;
 	border: 1px solid #e6e6e6;
@@ -27,9 +45,6 @@ body{
 }
 .content p, figcaption {
 	padding: 0rem 1rem;
-}
-.circle-img{
-	border-radius: 25px !important;
 }
 
 /*---------------------------------- --END-- POST STYLE ----------------------------------*/
