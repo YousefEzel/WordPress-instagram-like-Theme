@@ -28,6 +28,9 @@ body{
 .content p, figcaption {
 	padding: 0rem 1rem;
 }
+.circle-img{
+	border-radius: 25px !important;
+}
 
 /*---------------------------------- --END-- POST STYLE ----------------------------------*/
 
