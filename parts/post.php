@@ -2,7 +2,7 @@
 	<div class="col m-2 post-header">
 		<div class="row header-row" style="">
 			<div class="col-img" style=" " >
-				<img class="user-img circle-img" width="45" height="45" src="<?php echo get_avatar_url( get_the_author_meta('ID')); ?>" srcset="<?php echo get_avatar_url( get_the_author() ); ?>" >
+				<img class="user-img circle-img" width="45" height="45" src="<?php echo get_avatar_url( get_the_author_meta('ID')); ?>" srcset="<?php echo get_avatar_url( get_the_author_meta('ID')); ?>" >
 			</div>
 			<div class="col mx-2" style="display: flex;">
 				<div class="row">
