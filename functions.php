@@ -67,5 +67,33 @@ function insta_custom_logo_setup() {
 }
 add_action( 'after_setup_theme', 'insta_custom_logo_setup' );
 
+/**
+* Edit/Filter the_content 
+* @param string|content 
+*/
+function insta_content($content)
+{
+	global $post;
+
+	$user_name = get_the_author();
+	$user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 
 
+	$pos = strpos($content, "<figcaption>") + strlen("<figcaption>"); 
+	if($pos === false)
+		$pos = strpos($content, "</figure>")+ strlen("</figure>");
+	
+	if(!$pos) return;
+
+	$a_href = '<a class="py-2 px-1 a-username" href="';
+	$main_content  = esc_url( $user_href ) . '" title="'. esc_attr( $user_name ) . '">';
+	$main_content .= '<span class="user_name">' . esc_attr( $user_name ) . ' ';
+	$a_after = '</span></a>';
+	
+
+	$content = substr_replace($content, $a_href . $main_content . $a_after , $pos, 0 ); // replace(append) in pos1
+	
+	return $content;
+}
+
+add_filter( 'the_content', 'insta_content', 6 /*,  */ ); 

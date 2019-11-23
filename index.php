@@ -3,10 +3,8 @@
 	<div class="row ">
 		<div class="col-1"></div>
 		<div class="col-7">
-			<?php
 			
-			get_template_part( '/parts/content' )  ;
-			?>
+			<?php get_template_part( '/parts/content' ); ?>
 			
 		</div>
 		<div class="col-3"></div>
