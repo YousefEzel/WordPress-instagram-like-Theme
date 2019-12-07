@@ -17,6 +17,8 @@ function insta_scripts_register() {
 
 	//-- MAIN STYLE -- STYLE.CSS --
 	wp_enqueue_style( 'Main-Style', get_stylesheet_uri());
+	//-- Footer STYLE -- Likes.CSS --
+	wp_enqueue_style( 'Likes-Style', get_template_directory_uri() . '/Like.css');
 	//<!-- Font Awesome -->
 	wp_enqueue_style( 'fontawesome-all', 'https://use.fontawesome.com/releases/v5.11.2/css/all.css');
 	//<!-- Bootstrap core CSS -->
@@ -73,32 +75,42 @@ add_action( 'after_setup_theme', 'insta_custom_logo_setup' );
 */
 
 
-function insta_content($content, $code = '<hr>')
+function insta_content($content)
 {
-	global $post; $code = '<hr>like buttons<hr>';
-	
-	$user_name = get_the_author();
-	$user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
+	global $post; 
 
-	$before_fullcode = $code;
-	$a_href = '<a class="py-2 px-1 a-username" href="';
-	$main_content  = esc_url( $user_href ) . '" title="'. esc_attr( $user_name ) . '"><span class="user_name">' . esc_attr( $user_name ) . '';
-	$a_after = '</span></a>';
-	$full_code = $a_href . $main_content . $a_after;
+	$Like_btn = '<hr><div class="rm-br likes">
+	<button class="lk _like" onclick="this.style.background-position: 0px -324px;"><span class="like"></span></button>
+	<button class="lk _comment"><span class="comment"></span></button>
+	<button class="lk _share"><span class="share"></span></button>
+	</div><hr>';
 
-	// Remove unwanted HTML comments
-	$content = preg_replace('/<!--(.|\s)*?-->/', '', $content);
-	
-	$fig = strpos($content, "<figcaption>");
-	if( $fig > 0)
-		$pos = $fig +  strlen("<figcaption>"); 
-	else {
-		$pos = strpos($content, "</figure>") + strlen("</figure>");
-	}
+	if ($post->post_type == 'insta_post'):
+		$user_name = get_the_author();
+		$user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 
-	$content = substr_replace($content, $before_fullcode . $full_code, $pos, 0 ); // replace(append) in pos1
+		$before_fullcode = $Like_btn;
+		$a_href = '<a class="py-2 px-1 a-username" href="';
+		$main_content  = esc_url( $user_href ) . '" title="'. esc_attr( $user_name ) . '"><span class="user_name">' . esc_attr( $user_name ) . '';
+		$a_after = '</span></a>';
+		$full_code = $a_href . $main_content . $a_after;
+
+		// Remove unwanted HTML comments
+		$content = preg_replace('/<!--(.|\s)*?-->/', '', $content);
+		
+		$fig = strpos($content, "<figcaption>");
+		if( $fig > 0)
+			$pos = $fig +  strlen("<figcaption>"); 
+		else {
+			$pos = strpos($content, "</figure>") + strlen("</figure>");
+		}
+
+		$content = substr_replace($content, $before_fullcode . $full_code, $pos, 0 ); // replace(append) in pos1
+		
+		return $content;
+	endif;
 	
 	return $content;
 }
 
-add_filter( 'the_content', 'insta_content', 6 , 2 ); 
+add_filter( 'the_content', 'insta_content', 6 , 1 ); 

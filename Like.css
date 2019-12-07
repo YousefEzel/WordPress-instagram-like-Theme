@@ -1,0 +1,29 @@
+/* Liking part CSS  */
+
+span.like, span.comment, span.share{
+	font-size: 14px;
+	cursor: pointer;
+	background-image: url("like_btns/buttons_bg.png");
+}
+button._like{
+	background-repeat: no-repeat;
+	background-position: -26px -324px;
+}
+button._comment{
+	background-repeat: no-repeat;
+	background-position: -130px -298px;
+}
+button._share{
+	background-repeat: no-repeat;
+	background-position: -286px -350px;
+}
+
+button.lk{
+	margin: 5px;
+	min-height: 25px;
+	min-width: 26px;
+	padding: 0;
+	background-image: url("like_btns/buttons_bg.png");
+	border: none;
+	background-color: transparent;
+}

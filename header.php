@@ -13,13 +13,21 @@
     <nav class="navbar navbar-expand-lg navbar-bg navbar-light indigo">
       <div class="container" style="max-width: 70%;">
         <a class="navbar-brand" href="<?php echo home_url('/'); ?>">
-          <i class="fab fa-instagram " style="font-size: 1.7rem; border-right: 2px solid black; padding-right: 10px;"></i> 
-            <?php
+          <i class="fab fa-instagram" style="font-size: 1.7rem; "></i> 
+            <?php  
             $custom_logo_id = get_theme_mod( 'custom_logo' );
             $logo = wp_get_attachment_image_src( $custom_logo_id , 'full' );
             if ( has_custom_logo() ) {
                     echo '<img class="logo-img" src="' . esc_url( $logo[0] ) . '" alt="' . get_bloginfo( 'name' ) . '">';
-            }?>
+            ?>
+            <style type="text/css">
+              i.fa-instagram{
+                font-size: 1.7rem; 
+                border-right: 2px solid black; 
+                padding-right: 10px;
+              }
+            </style>
+            <?php } ?>
 
         </a>
         <!-- Search form -->
