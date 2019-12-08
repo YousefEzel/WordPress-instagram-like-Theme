@@ -95,11 +95,11 @@ function insta_content($content)
 
 	$Like_btn = '<hr>
 	<div class="rm-br likes">
-		<button class="lk _like" onclick="this.style.background-position: 0px -324px; "></button>
+		<button class="lk _like" onclick="my()"></button>
 		<button class="lk _comment"></button>
 		<!--<button class="lk _share"></button>-->
 	</div>
-	<div class="rm-br likes_number"><div class="like_number">'.$lk.' Likes</div></div>';
+	<div class="rm-br likes_number"><div class="bold lik like_number"><span class="lks">'.$lk.'</span> Likes</div></div>';
 
 	if ($post->post_type == 'insta_post'):
 		$user_name = get_the_author();

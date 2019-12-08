@@ -3,7 +3,6 @@ $(document).ready(function() {
     $('[title="Activities"] span.text-link').replaceWith('<i class="far fa-heart fa-size"></i>');
     $('[title="Profile"] span.text-link').replaceWith('<i class="far fa-user fa-size"></i>');
 
-
     var content = document.getElementsByClassName("content");
     content.forEach(function(elem) {
 
@@ -24,16 +23,7 @@ $(document).ready(function() {
 
     $('button._like').click(function() {
         this.style.backgroundPosition = '0px -324px';
+        
     });
+    document.getElementsByClassName('bold').forEach((bold)=>{bold.style.fontWeight = "600";},this);
 });
-
-function loadDoc() {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-     document.getElementById("demo").innerHTML = this.responseText;
-    }
-  };
-  xhttp.open("GET", "like.php", true);
-  xhttp.send();
-}
