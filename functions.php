@@ -77,27 +77,43 @@ add_action( 'after_setup_theme', 'insta_custom_logo_setup' );
 
 function insta_content($content)
 {
-	global $post; 
+	global $post;
+	global $wpdb;
+	$query = $wpdb->prepare("SELECT SUM(a.likes_count) as lk, a.likes_count, a.likes_post_ID, a.likes_author FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =%s AND b.post_type=%s", $post->ID, 'insta_post');
 
-	$Like_btn = '<hr><div class="rm-br likes">
-	<button class="lk _like" onclick="this.style.background-position: 0px -324px;"><span class="like"></span></button>
-	<button class="lk _comment"><span class="comment"></span></button>
-	<button class="lk _share"><span class="share"></span></button>
-	</div><hr>';
+ 	$like_count = $wpdb->get_results($query);
+
+	if ($like_count) {
+		foreach ($like_count as $like) {
+			$lk = $like->lk;
+		}
+		//var_dump($like_count);
+		//print_r($like_count);
+	}else{
+		$lk = 'nothing was found';
+	}
+
+	$Like_btn = '<hr>
+	<div class="rm-br likes">
+		<button class="lk _like" onclick="this.style.background-position: 0px -324px; "></button>
+		<button class="lk _comment"></button>
+		<!--<button class="lk _share"></button>-->
+	</div>
+	<div class="rm-br likes_number"><div class="like_number">'.$lk.' Likes</div></div>';
 
 	if ($post->post_type == 'insta_post'):
 		$user_name = get_the_author();
 		$user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 
 		$before_fullcode = $Like_btn;
-		$a_href = '<a class="py-2 px-1 a-username" href="';
+		$a_href = '<a class="py-2 pr-2 a-username" href="';
 		$main_content  = esc_url( $user_href ) . '" title="'. esc_attr( $user_name ) . '"><span class="user_name">' . esc_attr( $user_name ) . '';
 		$a_after = '</span></a>';
 		$full_code = $a_href . $main_content . $a_after;
 
 		// Remove unwanted HTML comments
 		$content = preg_replace('/<!--(.|\s)*?-->/', '', $content);
-		
+
 		$fig = strpos($content, "<figcaption>");
 		if( $fig > 0)
 			$pos = $fig +  strlen("<figcaption>"); 
@@ -106,7 +122,8 @@ function insta_content($content)
 		}
 
 		$content = substr_replace($content, $before_fullcode . $full_code, $pos, 0 ); // replace(append) in pos1
-		
+		$content = preg_replace("/<p[^>]*>[\s|&nbsp;]*<\/p>/", '', $content);
+
 		return $content;
 	endif;
 	
@@ -114,3 +131,12 @@ function insta_content($content)
 }
 
 add_filter( 'the_content', 'insta_content', 6 , 1 ); 
+
+
+/* 
+	create table wp_likes(
+		likes_ID int,likes_post_ID,likes_author string ,likes_author_email string ,likes_author_url string ,user_id int
+
+	)
+
+*/

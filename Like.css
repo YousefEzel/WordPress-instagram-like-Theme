@@ -18,12 +18,20 @@ button._share{
 	background-position: -286px -350px;
 }
 
-button.lk{
+.lk{
 	margin: 5px;
 	min-height: 25px;
 	min-width: 26px;
 	padding: 0;
 	background-image: url("like_btns/buttons_bg.png");
+	border: none;
+	background-color: transparent;
+}
+.like_number{
+	margin: 5px;
+	min-height: 25px;
+	min-width: 26px;
+	padding: 0;
 	border: none;
 	background-color: transparent;
 }
