@@ -75,31 +75,35 @@ add_action( 'after_setup_theme', 'insta_custom_logo_setup' );
 */
 
 
+//-----------------------------------------------------------------------------------------------------------------
+//------------------------------------------I am-------------------------------------------------------------------
+//-----------------------------------------------The Best----------------------------------------------------------
+//-----------------------------------------------------------------------------------------------------------------
 function insta_content($content)
 {
+
 	global $post;
 	global $wpdb;
-	$query = $wpdb->prepare("SELECT SUM(a.likes_count) as lk, a.likes_count, a.likes_post_ID, a.likes_author FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =%s AND b.post_type=%s", $post->ID, 'insta_post');
 
- 	$like_count = $wpdb->get_results($query);
-
-	if ($like_count) {
-		foreach ($like_count as $like) {
-			$lk = $like->lk;
+	$Like_btn = '
+	<script type="text/javascript">function fetch() {
+			$.post("'.admin_url( "admin-ajax.php" ).'",
+			 {"action":"my_action", "post_id" : '. $post->ID .', "increment" : 1 }
+			 ).done( function (response) {
+				document.getElementsByClassName("like_number").innerHTML = response;
+				console.log(response);
+			});
 		}
-		//var_dump($like_count);
-		//print_r($like_count);
-	}else{
-		$lk = 'nothing was found';
-	}
-
-	$Like_btn = '<hr>
-	<div class="rm-br likes">
-		<button class="lk _like" onclick="my()"></button>
+	fetch();
+	</script>
+	<hr>
+	<div class="rm-br likes"> 
+		<button class="lk _like" id="_like"></button>
 		<button class="lk _comment"></button>
 		<!--<button class="lk _share"></button>-->
 	</div>
-	<div class="rm-br likes_number"><div class="bold lik like_number"><span class="lks">'.$lk.'</span> Likes</div></div>';
+	
+	<div class="rm-br likes_number"><div class="bold lik like_number"><span class="lks">0 </span>Likes</div></div>';
 
 	if ($post->post_type == 'insta_post'):
 		$user_name = get_the_author();
@@ -131,12 +135,40 @@ function insta_content($content)
 }
 
 add_filter( 'the_content', 'insta_content', 6 , 1 ); 
+// -- Just a function to add two %d 
+function sum($x,$y){
+	return $x + $y;
+}
 
+function data_retreive()
+{
+	global $post;
+	global $wpdb;
 
-/* 
-	create table wp_likes(
-		likes_ID int,likes_post_ID,likes_author string ,likes_author_email string ,likes_author_url string ,user_id int
+	$id = intval($_POST['post_id']);
+	$in = intval($_POST['increment']);
 
-	)
+	$query = $wpdb->prepare("SELECT  a.likes_count, a.likes_post_ID, a.likes_author FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =%s AND b.post_type=%s", $id, 'insta_post');
 
-*/
+ 	$like_count = $wpdb->get_results($query);
+
+	if ($like_count) {
+		foreach ($like_count as $like) {
+			$lk += $like->likes_count;
+			$users .= $like->likes_author . ',';
+
+		}
+		//var_dump($like_count);
+		print_r($like_count);
+	}else{
+		$lk = 'nothing was found';
+	}
+	$user = trim($users, ',');
+	$user = explode(',', $user);
+	echo sum($lk, $in) .  print_r($user);
+	die();
+	
+}
+
+add_action( "wp_ajax_my_action", 'data_retreive' );
+add_action( "wp_ajax_nopriv_my_action", 'data_retreive' );
