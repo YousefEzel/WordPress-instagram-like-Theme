@@ -85,25 +85,32 @@ function insta_content($content)
 	global $post;
 	global $wpdb;
 
-	$Like_btn = '
-	<script type="text/javascript">function fetch() {
-			$.post("'.admin_url( "admin-ajax.php" ).'",
-			 {"action":"my_action", "post_id" : '. $post->ID .', "increment" : 1 }
-			 ).done( function (response) {
-				document.getElementsByClassName("like_number").innerHTML = response;
-				console.log(response);
-			});
+	$lk = 0;
+
+	$retreive_query = $wpdb->prepare("SELECT a.likes_count, a.likes_post_ID, a.likes_author, a.likes_author_url FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =b.ID AND b.post_type='insta_post' and b.ID =%s", $post->ID);
+
+ 	$like_count = $wpdb->get_results($retreive_query);
+
+	if ($like_count) {
+		foreach ($like_count as $like) {
+			$lk += $like->likes_count;
+
 		}
-	fetch();
-	</script>
+		
+	}
+	$Like_btn = '
 	<hr>
 	<div class="rm-br likes"> 
-		<button class="lk _like" id="_like"></button>
+		<button class="lk _like like-' . $post->ID . '" id="like-' . $post->ID . '" onclick="fetch('.  $post->ID .')"></button>
 		<button class="lk _comment"></button>
 		<!--<button class="lk _share"></button>-->
 	</div>
 	
-	<div class="rm-br likes_number"><div class="bold lik like_number"><span class="lks">0 </span>Likes</div></div>';
+	<div class="rm-br likes_number">
+		<div class="bold lik  like_number">
+			<span class="lks id-' . $post->ID . '">'. $lk .'</span><span class="id-' . $post->ID . '"> Like</span>
+		</div>
+	</div>';
 
 	if ($post->post_type == 'insta_post'):
 		$user_name = get_the_author();
@@ -137,7 +144,7 @@ function insta_content($content)
 add_filter( 'the_content', 'insta_content', 6 , 1 ); 
 // -- Just a function to add two %d 
 function sum($x,$y){
-	return $x + $y;
+	return $x += $y;
 }
 
 function data_retreive()
@@ -148,26 +155,51 @@ function data_retreive()
 	$id = intval($_POST['post_id']);
 	$in = intval($_POST['increment']);
 
-	$query = $wpdb->prepare("SELECT  a.likes_count, a.likes_post_ID, a.likes_author FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =%s AND b.post_type=%s", $id, 'insta_post');
+	$retreive_query = $wpdb->prepare("SELECT a.likes_count, a.likes_post_ID, a.likes_author, a.likes_author_url FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =b.ID AND b.post_type='insta_post' and b.ID =%s", $id);
 
- 	$like_count = $wpdb->get_results($query);
+ 	$like_count = $wpdb->get_results($retreive_query);
 
 	if ($like_count) {
 		foreach ($like_count as $like) {
 			$lk += $like->likes_count;
-			$users .= $like->likes_author . ',';
+			$authors .= $like->likes_author .', ';
+			$authors_url .= $like->likes_author_url . ', ';
 
 		}
-		//var_dump($like_count);
-		print_r($like_count);
+		$lk += 1;
+		//print_r($like_count);
 	}else{
-		$lk = 'nothing was found';
+		$current_user = wp_get_current_user();
+
+		$a_name = $current_user->display_name;
+		$a_url = get_author_posts_url( get_the_author_meta( 'ID' ) );
+		$a_email = $current_user->user_email;
+		$a_ID = $current_user->ID;
+
+		$data = array(
+			'likes_ID' => null, 
+			'likes_post_ID' =>$id, 
+			'likes_author' =>$a_name, 
+			'likes_author_email' => $a_email, 
+			'likes_author_url' => $a_url,
+			'likes_count' =>  $in,
+			'user_id' =>  $a_ID );
+
+		$post_query = $wpdb->insert( 'wp_likes' , $data);
+		if ($post_query) {
+		 	//$lk += $in;
+		} else {
+			$lk = "Something went wrong!";
+		}
+		
 	}
-	$user = trim($users, ',');
-	$user = explode(',', $user);
-	echo sum($lk, $in) .  print_r($user);
+
+	$author = trim($authors , ', ');            // Authors: important.
+	$author_url = trim($authors_url, ', ');		// Authors url: important.
+
+	echo $lk;
+
 	die();
-	
 }
 
 add_action( "wp_ajax_my_action", 'data_retreive' );

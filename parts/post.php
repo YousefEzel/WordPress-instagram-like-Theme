@@ -5,16 +5,7 @@ $user_img = get_avatar_url( get_the_author_meta('ID') );
 $user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 
 ?>
-<script type="text/javascript">
-		/*function fetch() {
-			$.post("<?php echo admin_url( 'admin-ajax.php' ); ?>",
-			 {"action":"my_action", "post_id" : <?php the_ID(); ?> , "increment" : 1 }
-			 ).done( function (response) {
-				//document.getElementsByClassName("like_number").innerHTML = response;
-				console.log(response);
-			});
-		}*/
-	</script>
+
 <!-- HTML CODE -->
 <div class="post mt-5 post-<?php echo(the_ID()); ?>">
 	<div class="col m-2 post-header">
