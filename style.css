@@ -30,7 +30,7 @@ body{
 	max-inline-size: inherit;
 }
 .circle-img{
-	border-radius: 25px !important;
+	border-radius: 40px !important;
 	border: 1px solid #cecbcb;
 }
 .a-username, .a-username:hover{
@@ -38,14 +38,27 @@ body{
 	text-decoration: none; 
 	display: inline;
 }
+.a-username{
+	flex-direction: row;
+	display: flex;
+	font-size: 14px;
+	line-height: 18px;
+	margin-bottom: 2px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-weight: 600;
+
+}
 .user_name{
 	font-weight: 600;
 }
-.post {
+.post, .widget {
 	border-radius: 3px;
 	border: 1px solid #d5d2d2;
 	background: #fff;
 }
+
 div.content:not('figure'){
 	padding: 0 2rem;
 }
@@ -119,7 +132,7 @@ figure{
 
 }
 @media only screen and (min-width: 360px) {
-		.active-pink-4, .no-sd{
+		.active-pink-4{
 		display: none !important;
 	}
 	.fa-size{
@@ -132,7 +145,7 @@ figure{
 	}
 }
 @media only screen and (min-width: 450px) {
-		.active-pink-4, .no-sd{
+		.active-pink-4{
 		display: none !important;
 	}
 	.fa-size{
@@ -144,7 +157,7 @@ figure{
 
 /* Small devices (portrait tablets and large phones, 600px and up) */
 @media only screen and (min-width: 600px) {
-  .active-pink-4, .no-sd{
+  .active-pink-4{
 		display: none !important;
 	}
 	.fa-size{
@@ -156,7 +169,7 @@ figure{
 
 /* Medium devices (landscape tablets, 730px and up) */
 @media only screen and (max-width: 758px) {
-  .active-pink-4, .no-sd{
+  .active-pink-4{
 		 display: none !important;
 	}
 	.fa-size{
@@ -164,9 +177,7 @@ figure{
 		margin: 0px 20px;
 		color: black;
   }
-	.no-sd{
-		display: none;
-	}
+
 	.col-7.posts{
 		max-width: 100%;
     flex-basis: 100%;
@@ -177,18 +188,14 @@ figure{
   .active-pink-4{
 		 display: flex;
 	}
-	.no-sd{
-		display: none;
-	}
+
 	.fa-size{
 		font-size: 1.5rem;
 		margin: 0px 20px;
 		color: black;
   }
 	
-	.no-sd{
-		display: none;
-	}
+
 	.col-7.posts{
 		max-width: 100%;
     flex-basis: 100%;
@@ -232,4 +239,13 @@ figure{
 .form-control.search-form {
 	height: 30px;
 	width: 250px;
+}
+/*----------- widget ------------*/
+.description {
+	font-size: 12px;
+	line-height: 14px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: pre-wrap;
+	color: #999;
 }

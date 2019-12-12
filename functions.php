@@ -84,6 +84,7 @@ function insta_content($content)
 
 	global $post;
 	global $wpdb;
+	$current_user = wp_get_current_user();
 
 	$lk = 0;
 
@@ -94,14 +95,13 @@ function insta_content($content)
 	if ($like_count) {
 		foreach ($like_count as $like) {
 			$lk += $like->likes_count;
-
 		}
 		
 	}
 	$Like_btn = '
 	<hr>
 	<div class="rm-br likes"> 
-		<button class="lk _like like-' . $post->ID . '" id="like-' . $post->ID . '" onclick="fetch('.  $post->ID .')"></button>
+		<button class="lk _like like-' . $post->ID . '" id="like-' . $post->ID . '"	onclick="fetch('.  $post->ID . ')"></button>
 		<button class="lk _comment"></button>
 		<!--<button class="lk _share"></button>-->
 	</div>
@@ -142,65 +142,130 @@ function insta_content($content)
 }
 
 add_filter( 'the_content', 'insta_content', 6 , 1 ); 
-// -- Just a function to add two %d 
-function sum($x,$y){
-	return $x += $y;
-}
 
+/**
+* 
+* data_retreive @param : null
+* 
+**/
 function data_retreive()
 {
 	global $post;
 	global $wpdb;
+	$current_user = wp_get_current_user();
+	$r = ' registered ';
+
 
 	$id = intval($_POST['post_id']);
 	$in = intval($_POST['increment']);
 
-	$retreive_query = $wpdb->prepare("SELECT a.likes_count, a.likes_post_ID, a.likes_author, a.likes_author_url FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =b.ID AND b.post_type='insta_post' and b.ID =%s", $id);
+	$retreive_query = $wpdb->prepare("SELECT a.likes_count, a.likes_post_ID, a.likes_author, a.likes_author_url, a.user_id FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =b.ID AND b.post_type='insta_post' and b.ID =%s", $id);
 
  	$like_count = $wpdb->get_results($retreive_query);
-
+ 	$trv = true;
 	if ($like_count) {
 		foreach ($like_count as $like) {
 			$lk += $like->likes_count;
 			$authors .= $like->likes_author .', ';
 			$authors_url .= $like->likes_author_url . ', ';
-
+			$a_Id .= $like->user_id;
+			if ($current_user->ID == $like->user_id ) {
+				$trv = true;
+			} else {
+				$trv = false;
+			}
 		}
-		$lk += 1;
 		//print_r($like_count);
 	}else{
-		$current_user = wp_get_current_user();
-
-		$a_name = $current_user->display_name;
-		$a_url = get_author_posts_url( get_the_author_meta( 'ID' ) );
-		$a_email = $current_user->user_email;
-		$a_ID = $current_user->ID;
-
-		$data = array(
-			'likes_ID' => null, 
-			'likes_post_ID' =>$id, 
-			'likes_author' =>$a_name, 
-			'likes_author_email' => $a_email, 
-			'likes_author_url' => $a_url,
-			'likes_count' =>  $in,
-			'user_id' =>  $a_ID );
-
-		$post_query = $wpdb->insert( 'wp_likes' , $data);
-		if ($post_query) {
-		 	//$lk += $in;
-		} else {
-			$lk = "Something went wrong!";
-		}
 		
+		register_like_author($id);
+		$r .= '  1  ';
+	}
+
+	if ($trv == false) {
+		register_like_author($id);
+		$r .= '  2  ';
 	}
 
 	$author = trim($authors , ', ');            // Authors: important.
 	$author_url = trim($authors_url, ', ');		// Authors url: important.
 
-	echo $lk;
+	print_r($a_Id);
 
 	die();
 }
 
 add_action( "wp_ajax_my_action", 'data_retreive' );
 add_action( "wp_ajax_nopriv_my_action", 'data_retreive' );
+
+/**
+* 
+* register_like_author @param : $post_id
+* 
+**/
+function register_like_author($post_id)
+{
+	global $post;
+	global $wpdb;
+	$current_user = wp_get_current_user();
+
+	$a_name = $current_user->display_name;
+	$a_url = get_author_posts_url( get_the_author_meta( 'ID' ) );
+	$a_email = $current_user->user_email;
+	$a_ID = $current_user->ID;
+
+	$data = array(
+		'likes_ID' => null, 
+		'likes_post_ID' => $post_id, 
+		'likes_author' => $a_name, 
+		'likes_author_email' => $a_email, 
+		'likes_author_url' => $a_url,
+		'likes_count' => 1,
+		'user_id' =>  $a_ID );
+
+	$post_query = $wpdb->insert( 'wp_likes' , $data);
+	if ($post_query) {
+	 	__return_true();
+	} else {
+		__return_false();
+	}
+
+}
+
+/**
+*	get_liked_red @param
+*	
+*/
+
+add_action( "wp_ajax_get_liked_red", 'get_liked_red' );
+add_action( "wp_ajax_nopriv_get_liked_red", 'get_liked_red' );
+
+function get_liked_red()
+{
+	global $post;
+	global $wpdb;
+	$current_user = wp_get_current_user();
+	
+
+
+	$pid = intval($_POST['post_id']);
+	$usr_id = intval($_POST['curr_uid']);
+
+	$retreive_query = $wpdb->prepare("SELECT a.likes_post_ID, a.user_id, b.ID, b.post_type FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID=b.ID AND b.post_type='insta_post' and b.ID =%s AND a.user_id=%s ", $pid, $usr_id);
+
+ 	$u_id = $wpdb->get_results($retreive_query);
+ 	
+	if ($u_id) {
+		foreach ($u_id as $id) {
+			
+			if ($id->user_id == $usr_id ) {
+				$a_Id = $id->user_id ;
+			}
+		}
+		//print_r($u_id);
+	}
+	// End of if statment
+	//print_r($u_Id);
+	echo $a_Id;
+	die();
+}

@@ -31,7 +31,6 @@ $user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 	</div>
 	<div class="col post-footer"> 
 		<div class="row">
-			<?php  echo ($post->post_type == 'post') ? '<hr>like buttons<hr>' : false; ?>
 		</div>
 	</div>
 </div>

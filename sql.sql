@@ -14,9 +14,11 @@ CREATE TABLE IF NOT EXISTS `wp_likes`(
 )
 
 INSERT INTO `wp_likes` (`likes_ID`, `likes_post_ID`, `likes_author`, `likes_author_email`, `likes_author_url`, `likes_count`, `user_id`) VALUES ('31', '31', 'Youssef Mhamdi', 'sdfsdgfsfg@gmail.com', 'http://localhost/phpmyadmin/tbl_change.php?db=test&table=wp_likes', '10', '1');
+/**
+*	
+*	Reset likes_ID 
 
-
-
-
-SELECT COUNT(a.likes_count), a.likes_ID, b.ID FROM wp_likes a INNER JOIN wp_posts b ON a.likes_ID = b.ID
-SELECT sum(a.likes_count) as likes_sum,a.likes_count, a.likes_post_ID, a.likes_author, b.ID FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID = b.ID
+*/
+SET @num := 0;
+UPDATE wp_likes SET likes_ID = @num := (@num+1);
+ALTER TABLE wp_likes AUTO_INCREMENT = 1;

@@ -20,36 +20,18 @@ $(document).ready(function() {
             (e.nodeName == "BR") ? e.remove(): false;
         })
     }, this);
-
-        // $('button._like').click(function() {
-        //     if(this.style.backgroundPosition != '0px -324px'){
-        //         this.style.backgroundPosition = '0px -324px';
-        //     }else {
-        //         this.style.backgroundPosition = '-26px -324px';
-        //         var lk_btn = document.getElementsByClassName("lks");    
-
-        //         lk_btn.forEach((btn)=>{
-        //             var c_btn = btn.classList;
-        //             c_btn.forEach((c)=>{
-        //                 if(c == 'id-'+id){
-        //                     var b =parseInt(btn.innerText);
-        //                     btn.innerHTML = (b + 1);
-        //                     var bp1 = parseInt(btn.innerText);
-        //                     (bp1 > 1) ? btn.nextSibling.innerHTML = ' Likes' : ' Like';
-                            
-        //                 }
-        //             })
-                    
-        //             //console.log(btn);
-        //         },this);//--/ Stop
-        //     }
-            
-            
-        // });
-
     document.getElementsByClassName('bold').forEach((bold) => {
         bold.style.fontWeight = "600";
     }, this);
 
-    
+    var lk_btn = document.getElementsByClassName("lks");
+
+        lk_btn.forEach((btn)=>{
+            var c_btn = btn.classList;
+            c_btn.forEach((c)=>{
+                var bp1 = parseInt(btn.innerText);
+                (bp1 > 1) ? btn.nextSibling.innerHTML = ' Likes' : ' Like';
+            })
+        }, this);
+
 });

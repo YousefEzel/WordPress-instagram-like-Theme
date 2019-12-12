@@ -35,3 +35,11 @@ button._share{
 	border: none;
 	background-color: transparent; 
 }
+
+/*  Items-Centered   */
+figure.wp-block-image img {
+	margin: 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
