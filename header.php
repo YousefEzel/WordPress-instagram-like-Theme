@@ -31,12 +31,15 @@
 
         </a>
         <!-- Search form -->
-        <div class="d-flex flex-row-reverse">
-          <div class="active-pink-4">
-            <i class="fas fa-search search-shit"></i>
-            <input class="form-control search-form" type="text" placeholder="     Search" aria-label="Search">
-          </div>
-        </div>
+        <form id="searchform" method="get" action="<?php echo home_url('/'); ?>">
+            <div class="d-flex flex-row-reverse">
+              <div class="active-pink-4">
+                <i class="fas fa-search search-shit"></i>
+                <input class="form-control search-field search-form" type="text" name="s" placeholder="     Search" aria-label="Search" value="<?php the_search_query(); ?>">
+              </div>
+            </div>
+            
+        </form>
 
           <?php wp_nav_menu( array(
             'theme_location'  => 'Primary',

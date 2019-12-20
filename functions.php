@@ -99,40 +99,44 @@ function insta_content($content)
 		
 	}
 	$Like_btn = '
-	<hr>
-	<div class="rm-br likes"> 
+	<div class="rm-br likes i-' . $post->ID . '"> 
 		<button class="lk _like like-' . $post->ID . '" id="like-' . $post->ID . '"	onclick="fetch('.  $post->ID . ')"></button>
 		<button class="lk _comment"></button>
 		<!--<button class="lk _share"></button>-->
 	</div>
-	
-	<div class="rm-br likes_number">
+	<div class="rm-br likes_number i-' . $post->ID . '">
 		<div class="bold lik  like_number">
 			<span class="lks id-' . $post->ID . '">'. $lk .'</span><span class="id-' . $post->ID . '"> Like</span>
 		</div>
 	</div>';
+	( $current_user->ID == 0 ) ? $Like_btn='' : '';
 
-	if ($post->post_type == 'insta_post'):
+	if ($post->post_type == 'insta_post' ):
 		$user_name = get_the_author();
 		$user_href = get_author_posts_url( get_the_author_meta( 'ID' ) );
 
 		$before_fullcode = $Like_btn;
-		$a_href = '<a class="py-2 pr-2 a-username" href="';
+		$a_href = '<a class="py-2 pr-2 a-username i-' . $post->ID . '" href="';
 		$main_content  = esc_url( $user_href ) . '" title="'. esc_attr( $user_name ) . '"><span class="user_name">' . esc_attr( $user_name ) . '';
 		$a_after = '</span></a>';
-		$full_code = $a_href . $main_content . $a_after;
+
+		$full_code = '<div class="b-line i-' . $post->ID .'"></div>
+		<div id="like_container_' . $post->ID . '" class="container-' . $post->ID . ' like-container">' . 
+		$before_fullcode .$a_href . $main_content . $a_after . 
+		'</div>';
 
 		// Remove unwanted HTML comments
 		$content = preg_replace('/<!--(.|\s)*?-->/', '', $content);
 
 		$fig = strpos($content, "<figcaption>");
-		if( $fig > 0)
-			$pos = $fig +  strlen("<figcaption>"); 
-		else {
+		
+		if( $fig > 0){
+			$pos = $fig + strlen("<figcaption>"); 
+		}else {
 			$pos = strpos($content, "</figure>") + strlen("</figure>");
 		}
-
-		$content = substr_replace($content, $before_fullcode . $full_code, $pos, 0 ); // replace(append) in pos1
+		
+		$content = substr_replace($content,  $full_code, $pos, 0 ); // replace(append) in pos1
 		$content = preg_replace("/<p[^>]*>[\s|&nbsp;]*<\/p>/", '', $content);
 
 		return $content;
@@ -153,11 +157,11 @@ function data_retreive()
 	global $post;
 	global $wpdb;
 	$current_user = wp_get_current_user();
-	$r = ' registered ';
-
-
 	$id = intval($_POST['post_id']);
-	$in = intval($_POST['increment']);
+
+
+
+
 
 	$retreive_query = $wpdb->prepare("SELECT a.likes_count, a.likes_post_ID, a.likes_author, a.likes_author_url, a.user_id FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID =b.ID AND b.post_type='insta_post' and b.ID =%s", $id);
 
@@ -169,8 +173,10 @@ function data_retreive()
 			$authors .= $like->likes_author .', ';
 			$authors_url .= $like->likes_author_url . ', ';
 			$a_Id .= $like->user_id;
-			if ($current_user->ID == $like->user_id ) {
+			if ($current_user->ID == $like->user_id and  $id == $like->likes_post_ID ) {
 				$trv = true;
+				$delete_data = array( 'likes_post_ID' => $id, 'user_id'=> $current_user->ID );
+				$post_query = $wpdb->delete( 'wp_likes', $delete_data );
 			} else {
 				$trv = false;
 			}
@@ -179,18 +185,17 @@ function data_retreive()
 	}else{
 		
 		register_like_author($id);
-		$r .= '  1  ';
+		
 	}
 
 	if ($trv == false) {
 		register_like_author($id);
-		$r .= '  2  ';
 	}
 
 	$author = trim($authors , ', ');            // Authors: important.
 	$author_url = trim($authors_url, ', ');		// Authors url: important.
 
-	print_r($a_Id);
+	//print_r($post_query);
 
 	die();
 }
@@ -210,10 +215,26 @@ function register_like_author($post_id)
 	$current_user = wp_get_current_user();
 
 	$a_name = $current_user->display_name;
-	$a_url = get_author_posts_url( get_the_author_meta( 'ID' ) );
+	$a_url = get_author_posts_url( $current_user->ID );
 	$a_email = $current_user->user_email;
 	$a_ID = $current_user->ID;
 
+	$pid = $post_id;
+	$usr_id = $a_ID;
+
+	$retreive_query = $wpdb->prepare("SELECT a.likes_post_ID, a.user_id, b.ID, b.post_type FROM wp_likes a INNER JOIN wp_posts b ON a.likes_post_ID=b.ID AND b.post_type='insta_post' and b.ID =%s AND a.user_id=%s ", $pid, $usr_id);
+
+ 	$u_id = $wpdb->get_results($retreive_query);
+ 	
+	if ($u_id) {
+		foreach ($u_id as $id) {
+			
+			if ($id->user_id == $usr_id ) {
+				$a_Id = $id->user_id;
+			}
+		}
+	}
+	
 	$data = array(
 		'likes_ID' => null, 
 		'likes_post_ID' => $post_id, 
@@ -223,7 +244,14 @@ function register_like_author($post_id)
 		'likes_count' => 1,
 		'user_id' =>  $a_ID );
 
-	$post_query = $wpdb->insert( 'wp_likes' , $data);
+	//
+	if ($a_Id) {
+
+	} else {
+		$post_query = $wpdb->insert( 'wp_likes' , $data);
+	}
+	
+	
 	if ($post_query) {
 	 	__return_true();
 	} else {
@@ -233,8 +261,8 @@ function register_like_author($post_id)
 }
 
 /**
-*	get_liked_red @param
-*	
+*	get_liked_red @param none
+*	return the user_id which will allow the other side of function to get the red heart (like btn) 
 */
 
 add_action( "wp_ajax_get_liked_red", 'get_liked_red' );
@@ -244,8 +272,6 @@ function get_liked_red()
 {
 	global $post;
 	global $wpdb;
-	$current_user = wp_get_current_user();
-	
 
 
 	$pid = intval($_POST['post_id']);
@@ -259,13 +285,83 @@ function get_liked_red()
 		foreach ($u_id as $id) {
 			
 			if ($id->user_id == $usr_id ) {
-				$a_Id = $id->user_id ;
+				$a_Id = $id->user_id;
 			}
 		}
-		//print_r($u_id);
 	}
-	// End of if statment
-	//print_r($u_Id);
+	
 	echo $a_Id;
 	die();
+}
+
+/**
+*
+* get current local ip for the comment local ip address
+*
+*/
+
+function getClientIP()
+{
+    $ipaddress = 'UNKNOWN';
+    $keys = array('HTTP_CLIENT_IP','HTTP_X_FORWARDED_FOR','HTTP_X_FORWARDED',
+    			  'HTTP_FORWARDED_FOR','HTTP_FORWARDED','REMOTE_ADDR');
+    foreach($keys as $key)
+    {
+        if (isset($_SERVER[$key]) && !empty($_SERVER[$key]) && filter_var($_SERVER[$key], FILTER_VALIDATE_IP))
+        {
+            $ipaddress = $_SERVER[$key];
+            break;
+        }
+    }
+    return $ipaddress;
+}
+
+
+
+add_action( "wp_ajax_add_comment", 'add_comment' );
+add_action( "wp_ajax_nopriv_add_comment", 'add_comment' );
+
+
+/**
+* @param $post_id
+* Add comments manually  
+*
+*/
+function add_comment()
+{
+	$ip = getClientIP();
+	global $post, $wpdb;
+	$post_id = intval($_POST['post_id']);
+	$comment = $_POST['comment'];
+
+	$current_user = wp_get_current_user();
+
+	$comment_author       = ($current_user->ID != 0) ? $current_user->display_name : 'Anonymous';
+    $comment_author_email = ($current_user->ID != 0) ? $current_user->user_email : '';
+    $comment_author_url   = ($current_user->ID != 0) ? get_author_posts_url( $current_user->ID ) : '';
+    $comment_author_IP    = $ip;
+    $comment_date    	  = current_time( 'mysql' );
+    $comment_date_gmt	  = get_gmt_from_date( $comment_date );
+    $comment_post_ID 	  = $post_id;
+    $comment_content 	  = $comment;
+    $comment_karma   	  = 0 ;
+    $comment_approved	  = 1 ;
+    $comment_agent   	  = isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : null ;
+    $comment_type    	  = '';
+    $comment_parent  	  = 0 ;
+    $user_id 		 	  = $current_user->ID;
+
+    $compacted = compact( 'comment_post_ID', 'comment_author', 
+    	'comment_author_email', 'comment_author_url', 'comment_author_IP', 
+    	'comment_date', 'comment_date_gmt', 'comment_content', 'comment_karma', 
+    	'comment_approved', 'comment_agent', 'comment_type', 'comment_parent', 'user_id' );
+    //$wpdb->insert( $wpdb->comments, $compacted )
+    if ( wp_insert_comment($compacted) ) {
+        $com = $comment;
+    }else{
+    	$com = ' Something went wrong ! ';
+    }
+
+    echo $com;
+    die();
 }

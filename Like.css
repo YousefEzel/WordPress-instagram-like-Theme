@@ -37,9 +37,20 @@ button._share{
 }
 
 /*  Items-Centered   */
-figure.wp-block-image img {
+figure img {
 	margin: 0 auto;
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	padding-bottom: 1rem;
+	/*border-bottom: 1px solid #d5d2d2;*/
+}
+
+.b-line {
+	border-bottom: 1px solid #d5d2d2;
+	width: 100%;
+	min-width: 100%;
+}
+.bt{
+	/*border-top: 1px solid #d5d2d2;*/
 }

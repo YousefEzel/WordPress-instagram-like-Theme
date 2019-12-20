@@ -7,8 +7,12 @@
 * Tags: Instagram, Insta, wordpress, WP, WordPress 
 *
 */
+html{
+	background: no-repeat center 33vh/10% url("https://www.freepnglogos.com/uploads/instagram-logo-png-transparent-png-12.png");
+}
 body{
 	background-color: #fafafa !important;
+	display: none;
 }
 /*---------------------------------- --START-- POST STYLE ----------------------------------*/
 .row{
@@ -36,11 +40,12 @@ body{
 .a-username, .a-username:hover{
 	color: #000;
 	text-decoration: none; 
-	display: inline;
+	
 }
 .a-username{
+	display: inline;
 	flex-direction: row;
-	display: flex;
+	/*display: flex;*/
 	font-size: 14px;
 	line-height: 18px;
 	margin-bottom: 2px;
@@ -67,15 +72,33 @@ figure{
 }
 .post-content{
 	border-top: 1px solid #e6e6e6;
-	border-bottom: 1px solid #e6e6e6;
+	/*border-bottom: 1px solid #e6e6e6;*/
 	background: #fff;
 }
 .content p, figcaption {
-	padding: 0rem 5px; 
+	/*padding: 0rem 5px; */
 	display: inline-block;
 	margin: 0 !important;
 } 
- 
+ .row.c_inputs{
+ 	border-top: 1px solid #e6e6e6;
+ }
+ .c_input {
+	display: flex;
+	flex-direction: row;
+	flex: 1;
+	border: none;
+}
+
+.c_btn {
+	display: flex;
+	flex-direction: row;
+	border: none;
+	background: none;
+	opacity: .3;
+	color: blue;
+}
+
 
 /*---------------------------------- --END-- POST STYLE ----------------------------------*/
 
@@ -87,7 +110,12 @@ figure{
 	align-items: end;
 	align-content: end;
 }
-
+nav.navbar{
+	/*position: fixed !important;*/
+	z-index: 9999;
+	width: 100%;
+	min-width: 100%;
+}
 .navbar-bg {
 	background: white;
 	border-bottom: 1px solid #e6e6e6;
@@ -132,25 +160,26 @@ figure{
 
 }
 @media only screen and (min-width: 360px) {
-		.active-pink-4{
+		.active-pink-4, .fa-instagram{
 		display: none !important;
 	}
 	.fa-size{
 		font-size: 1.5rem;
-		margin: 0px 4px;
+		margin: 0px 4px !important;
 		color: black;
   	}
-	p{
-		/*! font-size: 15px; */
+	.logo-img{
+		display: inline !important;
 	}
 }
 @media only screen and (min-width: 450px) {
-		.active-pink-4{
+	.active-pink-4{
 		display: none !important;
 	}
+
 	.fa-size{
 		font-size: 1.5rem;
-		margin: 0px 15px;
+		margin: 0px 10px !important;
 		color: black;
   	}
 }
@@ -162,9 +191,13 @@ figure{
 	}
 	.fa-size{
 		font-size: 1.5rem;
-		margin: 0px 15px;
+		margin: 0px 15px !;
 		color: black;
   	}
+	.fa-instagram{
+		display: inline !important;
+		border-right: 2px solid black !important;
+	}
 }
 
 /* Medium devices (landscape tablets, 730px and up) */
@@ -186,7 +219,7 @@ figure{
 /* Medium devices (landscape tablets, 768px and up) */
 @media only screen and (max-width: 768px) {
   .active-pink-4{
-		 display: flex;
+		 display: none !important;
 	}
 
 	.fa-size{
@@ -205,7 +238,7 @@ figure{
 /* Large devices (laptops/desktops, 992px and up) */
 @media only screen and (min-width: 992px) {
   .active-pink-4{ 
-    display: flex;
+    display: flex !important;
 	}
 	.fa-size{
 		font-size: 1.5rem;
@@ -217,7 +250,7 @@ figure{
 /* Extra large devices (large laptops and desktops, 1200px and up) */
 @media only screen and (min-width: 1200px) {
   .active-pink-4{
-    display: flex;
+    display: flex !important;
 	}
 	.fa-size{
 		font-size: 1.5rem;
@@ -225,6 +258,7 @@ figure{
 		color: black;
   	}
 }
+
 
 /*-----------------------*/
 
@@ -239,6 +273,7 @@ figure{
 .form-control.search-form {
 	height: 30px;
 	width: 250px;
+	text-align: center;
 }
 /*----------- widget ------------*/
 .description {
@@ -248,4 +283,18 @@ figure{
 	text-overflow: ellipsis;
 	white-space: pre-wrap;
 	color: #999;
+}
+
+.comment_text {
+	overflow-wrap: break-word;
+	word-wrap: break-word;
+	hyphens: auto;
+	display: inline;
+}
+.full-comment {
+	/*display: flex;*/
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	flex-basis: 100%;
+	
 }

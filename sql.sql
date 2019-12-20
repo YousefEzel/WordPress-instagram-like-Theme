@@ -22,3 +22,15 @@ INSERT INTO `wp_likes` (`likes_ID`, `likes_post_ID`, `likes_author`, `likes_auth
 SET @num := 0;
 UPDATE wp_likes SET likes_ID = @num := (@num+1);
 ALTER TABLE wp_likes AUTO_INCREMENT = 1;
+
+
+
+
+
+DELETE FROM `wp_likes` WHERE `wp_likes`.`likes_ID` = 1;
+
+
+
+
+$wpdb->delete( 'wp_likes', array( 'likes_ID' => $id ) );
+
